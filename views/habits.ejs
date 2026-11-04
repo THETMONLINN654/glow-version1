@@ -1,0 +1,79 @@
+<%- include('partials/header') %>
+
+<main class="container">
+
+  <section class="page-hero">
+    <h1 class="page-title">✅ Daily Habits</h1>
+    <p class="page-desc">Small habits done consistently create big transformations. Check off what you've done today!</p>
+  </section>
+
+  <!-- Add Habit Form -->
+  <section class="form-section">
+    <div class="glass-card">
+      <h2 class="card-title">➕ Add a New Habit</h2>
+      <form action="/habits/add" method="POST" class="inline-form">
+        <input
+          type="text"
+          name="name"
+          placeholder="e.g. Drink 8 glasses of water..."
+          class="text-input"
+          required
+          maxlength="60"
+        />
+        <button type="submit" class="btn btn-primary">Add Habit</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Habits List -->
+  <section class="list-section">
+    <div class="habits-header">
+      <h2 class="section-title">📋 Today's Habits</h2>
+      <span class="badge">
+        <%= habits.filter(h => h.completed).length %> / <%= habits.length %> done
+      </span>
+    </div>
+
+    <% if (habits.length === 0) { %>
+      <div class="empty-state glass-card">
+        <span class="empty-emoji">🌱</span>
+        <p>No habits yet — add your first one above!</p>
+      </div>
+    <% } else { %>
+      <div class="habits-list">
+        <% habits.forEach(habit => { %>
+          <div class="habit-item glass-card <%= habit.completed ? 'completed' : '' %>">
+            <div class="habit-info">
+              <span class="habit-check"><%= habit.completed ? '✅' : '⭕' %></span>
+              <span class="habit-name"><%= habit.name %></span>
+            </div>
+            <div class="habit-actions">
+              <form action="/habits/toggle/<%= habit.id %>" method="POST" style="display:inline">
+                <button type="submit" class="btn btn-soft btn-xs">
+                  <%= habit.completed ? 'Undo' : 'Done!' %>
+                </button>
+              </form>
+              <form action="/habits/delete/<%= habit.id %>" method="POST" style="display:inline">
+                <button type="submit" class="btn btn-danger btn-xs">🗑</button>
+              </form>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <!-- Progress Bar -->
+    <% if (habits.length > 0) { %>
+      <div class="glass-card progress-card">
+        <p class="progress-label">Today's Completion</p>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" style="width: <%= Math.round(habits.filter(h=>h.completed).length / habits.length * 100) %>%"></div>
+        </div>
+        <p class="progress-pct"><%= Math.round(habits.filter(h=>h.completed).length / habits.length * 100) %>%</p>
+      </div>
+    <% } %>
+  </section>
+
+</main>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,81 @@
+<%- include('partials/header') %>
+
+<main class="container">
+
+  <section class="page-hero">
+    <h1 class="page-title">🎯 Personal Goals</h1>
+    <p class="page-desc">Dream big, start small. Set your self-improvement goals and watch yourself grow.</p>
+  </section>
+
+  <!-- Add Goal Form -->
+  <section class="form-section">
+    <div class="glass-card">
+      <h2 class="card-title">➕ Add a New Goal</h2>
+      <form action="/goals/add" method="POST" class="inline-form">
+        <input
+          type="text"
+          name="title"
+          placeholder="e.g. Improve Coding Skills, Sleep by 11pm..."
+          class="text-input"
+          required
+          maxlength="80"
+        />
+        <button type="submit" class="btn btn-primary">Add Goal</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Goals List -->
+  <section class="list-section">
+    <h2 class="section-title">📌 My Goals</h2>
+
+    <% if (goals.length === 0) { %>
+      <div class="empty-state glass-card">
+        <span class="empty-emoji">🚀</span>
+        <p>No goals yet — set your first one above!</p>
+      </div>
+    <% } else { %>
+      <div class="goals-list">
+        <% goals.forEach(goal => { %>
+          <div class="goal-item glass-card status-<%= goal.status.toLowerCase().replace(' ', '-') %>">
+            <div class="goal-info">
+              <span class="goal-status-dot"></span>
+              <span class="goal-title-text"><%= goal.title %></span>
+            </div>
+            <div class="goal-controls">
+              <form action="/goals/update/<%= goal.id %>" method="POST" class="status-form">
+                <select name="status" class="status-select" onchange="this.form.submit()">
+                  <option value="Not Started" <%= goal.status === 'Not Started' ? 'selected' : '' %>>🔴 Not Started</option>
+                  <option value="In Progress" <%= goal.status === 'In Progress' ? 'selected' : '' %>>🟡 In Progress</option>
+                  <option value="Completed" <%= goal.status === 'Completed' ? 'selected' : '' %>>🟢 Completed</option>
+                </select>
+              </form>
+              <form action="/goals/delete/<%= goal.id %>" method="POST" style="display:inline">
+                <button type="submit" class="btn btn-danger btn-xs">🗑</button>
+              </form>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+
+      <!-- Goals Summary -->
+      <div class="goals-summary glass-card">
+        <div class="summary-item">
+          <span class="dot dot-red"></span>
+          <span>Not Started: <strong><%= goals.filter(g => g.status === 'Not Started').length %></strong></span>
+        </div>
+        <div class="summary-item">
+          <span class="dot dot-yellow"></span>
+          <span>In Progress: <strong><%= goals.filter(g => g.status === 'In Progress').length %></strong></span>
+        </div>
+        <div class="summary-item">
+          <span class="dot dot-green"></span>
+          <span>Completed: <strong><%= goals.filter(g => g.status === 'Completed').length %></strong></span>
+        </div>
+      </div>
+    <% } %>
+  </section>
+
+</main>
+
+<%- include('partials/footer') %>

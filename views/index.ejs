@@ -1,0 +1,95 @@
+<%- include('partials/header') %>
+
+<main class="container">
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-text">
+      <p class="hero-subtitle">Hey there, superstar 🌟</p>
+      <h1 class="hero-title">Ready to <em>Glow Up</em> today?</h1>
+      <p class="hero-desc">Track your habits, check your mood, and crush your goals — one day at a time.</p>
+    </div>
+  </section>
+
+  <!-- Quote Card -->
+  <section class="quote-section">
+    <div class="glass-card quote-card">
+      <div class="quote-icon">💬</div>
+      <blockquote class="quote-text">"<%= quote.text %>"</blockquote>
+      <p class="quote-author">— <%= quote.author %></p>
+      <a href="/" class="btn btn-ghost btn-sm">✨ New Quote</a>
+    </div>
+  </section>
+
+  <!-- Dashboard Stats -->
+  <section class="stats-section">
+    <h2 class="section-title">📊 Your Progress Today</h2>
+    <div class="stats-grid">
+
+      <div class="glass-card stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-info">
+          <p class="stat-label">Habits Completed</p>
+          <p class="stat-value"><%= completedHabits %> <span class="stat-of">/ <%= totalHabits %></span></p>
+        </div>
+        <a href="/habits" class="btn btn-soft btn-sm">View Habits →</a>
+      </div>
+
+      <div class="glass-card stat-card">
+        <div class="stat-icon">
+          <% if (latestMood) { %>
+            <%= latestMood.emoji %>
+          <% } else { %>
+            😶
+          <% } %>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">Current Mood</p>
+          <p class="stat-value">
+            <% if (latestMood) { %>
+              <%= latestMood.label %>
+            <% } else { %>
+              Not logged yet
+            <% } %>
+          </p>
+        </div>
+        <a href="/mood" class="btn btn-soft btn-sm">Log Mood →</a>
+      </div>
+
+      <div class="glass-card stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-info">
+          <p class="stat-label">Active Goals</p>
+          <p class="stat-value"><%= activeGoals %> <span class="stat-of">/ <%= totalGoals %></span></p>
+        </div>
+        <a href="/goals" class="btn btn-soft btn-sm">View Goals →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Quick Actions -->
+  <section class="actions-section">
+    <h2 class="section-title">⚡ Quick Actions</h2>
+    <div class="actions-grid">
+      <a href="/habits" class="action-card glass-card">
+        <span class="action-emoji">✅</span>
+        <span class="action-label">Daily Habits</span>
+        <span class="action-desc">Check off your habits for today</span>
+      </a>
+      <a href="/mood" class="action-card glass-card">
+        <span class="action-emoji">😊</span>
+        <span class="action-label">Mood Tracker</span>
+        <span class="action-desc">How are you feeling right now?</span>
+      </a>
+      <a href="/goals" class="action-card glass-card">
+        <span class="action-emoji">🎯</span>
+        <span class="action-label">My Goals</span>
+        <span class="action-desc">Track your self-improvement goals</span>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<%- include('partials/footer') %>

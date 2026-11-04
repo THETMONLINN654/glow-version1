@@ -1,0 +1,98 @@
+<%- include('partials/header') %>
+
+<main class="container">
+
+  <section class="page-hero">
+    <h1 class="page-title">😊 Mood Tracker</h1>
+    <p class="page-desc">Your feelings are valid. Log how you're feeling today and notice your patterns over time.</p>
+  </section>
+
+  <!-- Log Mood Form -->
+  <section class="form-section">
+    <div class="glass-card">
+      <h2 class="card-title">🌈 How are you feeling right now?</h2>
+      <form action="/mood/add" method="POST" class="mood-form">
+
+        <div class="mood-picker">
+          <label class="mood-option">
+            <input type="radio" name="emoji" value="😊" data-label="Happy" required />
+            <span class="mood-btn">😊</span>
+            <span class="mood-text">Happy</span>
+          </label>
+          <label class="mood-option">
+            <input type="radio" name="emoji" value="😎" data-label="Thriving" />
+            <span class="mood-btn">😎</span>
+            <span class="mood-text">Thriving</span>
+          </label>
+          <label class="mood-option">
+            <input type="radio" name="emoji" value="😐" data-label="Okay" />
+            <span class="mood-btn">😐</span>
+            <span class="mood-text">Okay</span>
+          </label>
+          <label class="mood-option">
+            <input type="radio" name="emoji" value="😴" data-label="Tired" />
+            <span class="mood-btn">😴</span>
+            <span class="mood-text">Tired</span>
+          </label>
+          <label class="mood-option">
+            <input type="radio" name="emoji" value="😢" data-label="Sad" />
+            <span class="mood-btn">😢</span>
+            <span class="mood-text">Sad</span>
+          </label>
+        </div>
+
+        <!-- Hidden label field updated by JS -->
+        <input type="hidden" name="label" id="moodLabel" value="Happy" />
+
+        <textarea
+          name="note"
+          placeholder="Add a short note (optional)... e.g. Had a great study session today!"
+          class="text-area"
+          maxlength="200"
+          rows="3"
+        ></textarea>
+
+        <button type="submit" class="btn btn-primary">Log My Mood ✨</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Mood History -->
+  <section class="list-section">
+    <h2 class="section-title">📅 Mood History</h2>
+
+    <% if (moods.length === 0) { %>
+      <div class="empty-state glass-card">
+        <span class="empty-emoji">🌙</span>
+        <p>No moods logged yet — start above!</p>
+      </div>
+    <% } else { %>
+      <div class="mood-history">
+        <% moods.forEach(mood => { %>
+          <div class="mood-entry glass-card">
+            <div class="mood-emoji-big"><%= mood.emoji %></div>
+            <div class="mood-details">
+              <p class="mood-label-text"><strong><%= mood.label %></strong></p>
+              <% if (mood.note) { %>
+                <p class="mood-note">"<%= mood.note %>"</p>
+              <% } %>
+              <p class="mood-date">📅 <%= mood.date %></p>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </section>
+
+</main>
+
+<script>
+  // Sync emoji selection to hidden label input
+  document.querySelectorAll('.mood-option input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      document.getElementById('moodLabel').value = this.dataset.label;
+    });
+  });
+</script>
+
+<%- include('partials/footer') %>
